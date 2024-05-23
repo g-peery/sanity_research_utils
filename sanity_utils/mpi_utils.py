@@ -31,6 +31,7 @@ def get_global_logger(
 
     # Create logger
     logger = logging.getLogger("util")
+    logger.setLevel(level)
 
     # Create handlers
     file_handler = logging.FileHandler(log_file)
@@ -90,7 +91,7 @@ def prepare_experiment_dir(result_dir, *args):
 def create_experiment_logger(
         output_dir,
         main_lvl=logging.DEBUG,
-        second_lvl=logging.INFO
+        second_lvl=logging.WARNING
     ):
     """
     Creates a logger. Will send info to a file output{rank}.txt
@@ -108,6 +109,7 @@ def create_experiment_logger(
 
     # Create a logger that is a child of util
     logger = logging.getLogger("util.experiment")
+    logger.setLevel(level)
 
     # Create handler
     handler = logging.FileHandler(os.path.join(output_dir, f"output{_rank}.txt"))
