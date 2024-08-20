@@ -65,7 +65,7 @@ def prepare_experiment_dir(result_dir, *args):
     Returns path to resulting directory.
     """
     # Get full name
-    basename = "-".join([str(x) for x in args])
+    basename = "-".join([str(x).replace("-", "n") for x in args])
     output_dir = os.path.join(result_dir, basename)
 
     # Have 1st process check for existence
