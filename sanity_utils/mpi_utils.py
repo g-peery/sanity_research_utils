@@ -52,6 +52,15 @@ def get_global_logger(
     return logger
 
 
+def _e_dir_cleanse(x):
+    cleansed = str(x).replace("-", "n")
+
+    if os.path.sep in cleansed:
+        cleansed = os.path.basename(cleansed)
+
+    return cleansed
+
+
 def prepare_experiment_dir(result_dir, *args):
     """
     Given a results/ directory, creates a subdirectory with
@@ -65,7 +74,7 @@ def prepare_experiment_dir(result_dir, *args):
     Returns path to resulting directory.
     """
     # Get full name
-    basename = "-".join([str(x).replace("-", "n") for x in args])
+    basename = "-".join([_e_dir_cleanse(x) for x in args])
     output_dir = os.path.join(result_dir, basename)
 
     # Have 1st process check for existence
