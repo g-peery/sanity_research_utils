@@ -61,13 +61,13 @@ def _e_dir_cleanse(x):
     return cleansed
 
 
-def prepare_experiment_dir(result_dir, *args):
+def prepare_experiment_dir(result_dir, *args, overwrite=False):
     """
     Given a results/ directory, creates a subdirectory with
     names provided in *args, separated by hyphens.
     For that reason, good to not include hyphens in args.
 
-    If it already exists, throws FileExistsError.
+    If it already exists, throws FileExistsError unless overwrite.
 
     Handles MPI stuff when all processes call.
     
@@ -88,6 +88,10 @@ def prepare_experiment_dir(result_dir, *args):
     # Sync processes
     should_abort = _comm.bcast(should_abort, root=0)
 
+    # If overwrite allowed, don't do anything
+    if overwrite:
+        should_abort = False
+
     # All processes raise if necessary
     if should_abort:
         raise FileExistsError(
@@ -99,7 +103,7 @@ def prepare_experiment_dir(result_dir, *args):
 
 def create_experiment_logger(
         output_dir,
-        main_lvl=logging.DEBUG,
+        main_lvl=logging.INFO,
         second_lvl=logging.WARNING
     ):
     """
