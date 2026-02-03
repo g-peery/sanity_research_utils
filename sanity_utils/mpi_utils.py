@@ -53,6 +53,9 @@ def get_global_logger(
 
 
 def _e_dir_cleanse(x):
+    if x is None:
+        return "N"
+
     cleansed = str(x).replace("-", "n")
 
     if os.path.sep in cleansed:
